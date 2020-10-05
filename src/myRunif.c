@@ -5,18 +5,14 @@
 /* SEXP myRunif( SEXP n, SEXP min, SEXP max ){
   
   SEXP statsPackage;
-  PROTECT(
-    statsPackage = eval( lang2( install( "getNamespace" ),
+  statsPackage = PROTECT( eval( lang2( install( "getNamespace" ),
                                 ScalarString( mkChar( "stats" ) ) ),
-                                R_GlobalEnv
-    )   
-  );  
+                                R_GlobalEnv ) );  
   
   SEXP RCallBack;
-  PROTECT( RCallBack = allocVector( LANGSXP, 4 ) ); 
+  RCallBack = PROTECT( allocVector( LANGSXP, 4 ) ); 
   SETCAR( RCallBack,
-          findFun( install("runif"), statsPackage )
-  );  
+          findFun( install("runif"), statsPackage ) );  
   
   SETCADR( RCallBack, n );
   SET_TAG( CDR( RCallBack ), install("n") );
@@ -28,8 +24,7 @@
   SET_TAG( CDR(CDDR( RCallBack )), install("max"));
   
   SEXP randoms;
-  PROTECT(
-    randoms = eval( RCallBack, statsPackage )
+ randoms =  PROTECT( eval( RCallBack, statsPackage )
   );  
   
   UNPROTECT(3);
@@ -37,23 +32,19 @@
   
 }
 */
+// install(): install the name of an R object
 SEXP myRunif( SEXP n, SEXP min, SEXP max ){
   
   SEXP statsPackage;
-  PROTECT(
-    statsPackage = eval( lang2( install("getNamespace"),
+  statsPackage = PROTECT( eval( lang2( install("getNamespace"),
                                 ScalarString( mkChar( "stats" ) ) ),
-                                R_GlobalEnv
-    )   
-  );  
+                                R_GlobalEnv ) );  
   SEXP randoms;
-  PROTECT(
-    randoms = eval( lang4( install("runif"),
+  randoms = PROTECT( eval( lang4( install("runif"),
                            n,
                            min,
                            max),
-                           statsPackage
-    ));
+                           statsPackage ) );
   UNPROTECT(2); 
   return( randoms );
 }
